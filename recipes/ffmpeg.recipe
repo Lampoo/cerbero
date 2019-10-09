@@ -63,7 +63,8 @@ class Recipe(recipe.Recipe):
             elif self.config.target_arch in [Architecture.ARM, Architecture.ARMv7]:
                 # Fails to link into an android App
                 # https://github.com/android-ndk/ndk/issues/337
-                libavextraconf += " --disable-neon"
+                #libavextraconf += " --disable-neon"
+                libavextraconf += " --enable-neon"
             if self.config.target_arch in [Architecture.X86]:
                 # Fails to link into an android app with relocation warnings
                 # in the custom assembly
