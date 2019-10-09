@@ -26,6 +26,10 @@ class Recipe(recipe.Recipe):
 
     deps = ['bzip2', 'zlib']
 
+    patches = [
+                'ffmpeg/0001-avcodec-mediacodecdec-fix-malfunction-found-in-media.patch',
+              ]
+
     files_libs = ['libavcodec', 'libavformat', 'libavutil', 'libswresample', 'libavfilter']
     files_devel = []
 
