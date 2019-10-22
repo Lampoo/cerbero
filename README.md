@@ -1,3 +1,12 @@
+# ABOUT ME
+
+Branch out from tag 1.16.1, includes a hotfix in FFMpeg to enable androidmedia
+in gstreamer, more specifically: FFMpeg has a regression that causes the MediaCodec
+always return EAGAIN error when calling *avcodec\_send\_packet()*.
+
+This provides a hotfix to disable the problematic codes and make androidmedia to
+work in Android.
+
 # Description
 
 Cerbero is a cross-platform build aggregator for Open Source projects that builds
