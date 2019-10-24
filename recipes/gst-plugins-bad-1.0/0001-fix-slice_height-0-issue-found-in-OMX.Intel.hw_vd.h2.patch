@@ -1,0 +1,49 @@
+From cab87f215f38b59da16468b2075934e7249d98c2 Mon Sep 17 00:00:00 2001
+From: Yonghua Zheng <yh.zheng@yuneec.com>
+Date: Thu, 24 Oct 2019 11:51:20 +0800
+Subject: [PATCH] fix slice_height = 0 issue found in OMX.Intel.hw_vd.h264
+
+Codes are taken from FFMpeg similar handling:
+
+-----------------------------------------------------------------------
+    av_log(avctx, AV_LOG_DEBUG, "Parsing MediaFormat %s\n", format);
+
+    /* Mandatory fields */
+    AMEDIAFORMAT_GET_INT32(s->width,  "width", 1);
+    AMEDIAFORMAT_GET_INT32(s->height, "height", 1);
+
+    AMEDIAFORMAT_GET_INT32(s->stride, "stride", 0);
+    s->stride = s->stride > 0 ? s->stride : s->width;
+
+    AMEDIAFORMAT_GET_INT32(s->slice_height, "slice-height", 0);
+
+    if (strstr(s->codec_name, "OMX.Nvidia.") && s->slice_height == 0) {
+        s->slice_height = FFALIGN(s->height, 16);
+    } else if (strstr(s->codec_name, "OMX.SEC.avc.dec")) {
+        s->slice_height = avctx->height;
+        s->stride = avctx->width;
+    } else if (s->slice_height == 0) {
+        s->slice_height = s->height;
+    }
+-----------------------------------------------------------------------
+---
+ sys/androidmedia/gstamcvideodec.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/sys/androidmedia/gstamcvideodec.c b/sys/androidmedia/gstamcvideodec.c
+index 6ca6dd2..9825931 100644
+--- a/sys/androidmedia/gstamcvideodec.c
++++ b/sys/androidmedia/gstamcvideodec.c
+@@ -779,6 +779,9 @@ gst_amc_video_dec_set_src_caps (GstAmcVideoDec * self, GstAmcFormat * format)
+     return FALSE;
+   }
+ 
++  stride = stride > 0 ? stride : width;
++  slice_height = slice_height > 0 ? slice_height : height;
++
+   if (!gst_amc_format_get_int (format, "crop-left", &crop_left, &err) ||
+       !gst_amc_format_get_int (format, "crop-right", &crop_right, &err) ||
+       !gst_amc_format_get_int (format, "crop-top", &crop_top, &err) ||
+-- 
+2.20.1
+
