@@ -7,6 +7,9 @@ always return EAGAIN error when calling *avcodec\_send\_packet()*.
 This provides a hotfix to disable the problematic codes and make androidmedia to
 work in Android.
 
+20191024: Plus one fix in androidmedia to handle cases where hardware codec output
+incorrect slice-height information.
+
 # Description
 
 Cerbero is a cross-platform build aggregator for Open Source projects that builds
