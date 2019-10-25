@@ -10,6 +10,20 @@ work in Android.
 20191024: Plus one fix in androidmedia to handle cases where hardware codec output
 incorrect slice-height information.
 
+# Archieve download
+
+https://lampoo.s3-ap-southeast-1.amazonaws.com/gstreamer-1.0-android-universal-1.16.1.tar.bz2
+
+## Build from source
+
+```
+$ git clone https://github.com/lampoo/cerbero
+$ git checkout 1.16.1_hotfix_mediacodec
+$ ./cerbero-uninstalled -c config/cross-android-universal.cbc bootstrap
+$ export QT5_PREFIX=/path/to/Qt/5.13.0
+$ ./cerbero-uninstalled -c config/cross-android-universal.cbc -v qt5 package gstreamer-1.0
+```
+
 # Description
 
 Cerbero is a cross-platform build aggregator for Open Source projects that builds
