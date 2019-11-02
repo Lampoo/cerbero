@@ -1,0 +1,35 @@
+From 8f146c35e46ed20f8efe0da9ccf23ca893eba818 Mon Sep 17 00:00:00 2001
+From: Yonghua Zheng <yh.zheng@yuneec.com>
+Date: Sat, 2 Nov 2019 23:13:12 +0800
+Subject: [PATCH 2/2] configure: disable ebp_available for x86
+
+In order to compile x86 assembly codes in gcc-4.9 / clang without
+having to 'disable-asm'.
+---
+ configure | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
+
+diff --git a/configure b/configure
+index 34c2adb..3ba036b 100755
+--- a/configure
++++ b/configure
+@@ -5828,15 +5828,7 @@ elif enabled x86; then
+ 
+     enable local_aligned
+ 
+-    # check whether EBP is available on x86
+-    # As 'i' is stored on the stack, this program will crash
+-    # if the base pointer is used to access it because the
+-    # base pointer is cleared in the inline assembly code.
+-    check_exec_crash <<EOF && enable ebp_available
+-volatile int i=0;
+-__asm__ volatile ("xorl %%ebp, %%ebp" ::: "%ebp");
+-return i;
+-EOF
++    disable ebp_available
+ 
+     # check whether EBX is available on x86
+     check_inline_asm ebx_available '""::"b"(0)' &&
+-- 
+2.21.0 (Apple Git-122.2)
+
