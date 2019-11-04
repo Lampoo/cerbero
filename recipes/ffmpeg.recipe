@@ -60,7 +60,6 @@ class Recipe(recipe.Recipe):
             if self.config.target_arch == Architecture.X86:
                 # libav internally aligns stacks, while Android doesn't
                 libavextraconf += " --extra-cflags='-mstackrealign'"
-                libavextraconf += " --disable-encoders"
 
         elif self.config.target_platform == Platform.IOS:
             # Some optimisations that were previously silently disabled
