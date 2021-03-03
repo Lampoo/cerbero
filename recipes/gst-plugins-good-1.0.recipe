@@ -213,6 +213,9 @@ class Recipe(custom.GStreamer):
         ]
     }
 
+    patches = [
+                'gst-plugins-good-1.0/0001-Add-wait-for-state-change-of-fakesrc.patch',
+              ]
 
     def prepare(self):
         self.append_env('CFLAGS', '-DLIBSOUP_DOES_NOT_STEAL_OUR_CONTEXT=1')

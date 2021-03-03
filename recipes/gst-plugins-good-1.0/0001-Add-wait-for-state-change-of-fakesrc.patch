@@ -1,0 +1,31 @@
+From c568f4eff511013619485e196b48b33a146119bf Mon Sep 17 00:00:00 2001
+From: Yonghua Zheng <yh.zheng@yuneec.com>
+Date: Wed, 3 Mar 2021 23:16:59 +0800
+Subject: [PATCH] Add wait for state change of fakesrc
+
+This is to ensure dummy packet is sent before responding with PLAY
+back to RTSP server to make sure UDP packets to traverse firewalls
+and NAT
+---
+ gst/rtsp/gstrtspsrc.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/gst/rtsp/gstrtspsrc.c b/gst/rtsp/gstrtspsrc.c
+index cc97bf7..be2a0bb 100644
+--- a/gst/rtsp/gstrtspsrc.c
++++ b/gst/rtsp/gstrtspsrc.c
+@@ -4693,6 +4693,11 @@ gst_rtspsrc_send_dummy_packets (GstRTSPSrc * src)
+     gst_element_set_state (stream->rtpsrc, GST_STATE_NULL);
+     gst_element_set_state (stream->udpsink[0], GST_STATE_PLAYING);
+     gst_element_set_state (stream->rtpsrc, GST_STATE_PLAYING);
++
++    /* wait until state change completed if running in async thread */
++    GstState cur, pending;
++    gst_element_get_state(stream->udpsink[0], &cur, &pending, GST_CLOCK_TIME_NONE);
++    gst_element_get_state(stream->rtpsrc, &cur, &pending, GST_CLOCK_TIME_NONE);
+   }
+   return TRUE;
+ }
+-- 
+2.25.1
+
