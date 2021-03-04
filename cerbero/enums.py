@@ -88,6 +88,8 @@ class DistroVersion:
     UBUNTU_ARTFUL = 'ubuntu_17_10_artful'
     UBUNTU_BIONIC = 'ubuntu_18_04_bionic'
     UBUNTU_DISCO = 'ubuntu_19_04_disco'
+    UBUNTU_EOAN = 'ubuntu_19_10_eoan'
+    UBUNTU_FOCAL = 'ubuntu_20_04_focal'
     FEDORA_16 = 'fedora_16'
     FEDORA_17 = 'fedora_17'
     FEDORA_18 = 'fedora_18'

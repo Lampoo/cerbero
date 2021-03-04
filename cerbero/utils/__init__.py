@@ -153,7 +153,17 @@ def system_info():
 
     # Get the distro info
     if platform == Platform.LINUX:
-        d = pplatform.linux_distribution()
+        if sys.version_info >= (3, 8, 0):
+            try:
+                import distro
+            except ImportError:
+                print('''Python >= 3.8 detected and the 'distro' python package was not found.
+Please install the 'python3-distro' or 'python-distro' package from your linux package manager or from pypi using pip.
+Terminating.''', file=sys.stderr)
+                sys.exit(1)
+            d = distro.linux_distribution()
+        else:
+            d = pplatform.linux_distribution()
 
         if d[0] == '' and d[1] == '' and d[2] == '':
             if os.path.exists('/etc/arch-release'):
@@ -210,6 +220,10 @@ def system_info():
                 distro_version = DistroVersion.UBUNTU_BIONIC
             elif d[2] in ['disco']:
                 distro_version = DistroVersion.UBUNTU_DISCO
+            elif d[2] in ['eoan']:
+                distro_version = DistroVersion.UBUNTU_EOAN
+            elif d[2] in ['focal']:
+                distro_version = DistroVersion.UBUNTU_FOCAL
             elif d[1].startswith('6.'):
                 distro_version = DistroVersion.DEBIAN_SQUEEZE
             elif d[1].startswith('7.') or d[1].startswith('wheezy'):
